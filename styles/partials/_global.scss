@@ -1,0 +1,325 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+@use "./animations" as *;
+@use "./fonts";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+input,
+textarea,
+*::placeholder {
+  font-family: "Nunito Sans", Arial, Helvetica, sans-serif;
+  color: $primary-color-light;
+}
+
+/**************** Default Margins Wrapper ******************/
+
+*[class*="wrapper"] {
+  margin: 0 1rem;
+
+  @include tablet {
+    margin: 0 2.25rem;
+  }
+
+  @include desktop {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 63.75rem;
+  }
+}
+*[class*="wrapper--tablet"] {
+  margin: 0;
+
+  @include tablet {
+    margin: 0 2.25rem;
+  }
+
+  @include desktop {
+  }
+}
+
+/****************** Default Paddings ***************/
+
+h1,
+h2,
+h3 {
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+
+  @include tablet {
+    padding-top: 3rem;
+    padding-bottom: 2.25rem;
+  }
+}
+
+/***************** FONTS ************************/
+// Page Header
+h1 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+
+  @include tablet {
+    font-size: 3.75rem;
+    line-height: 4.25rem;
+  }
+}
+// Section Header
+h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+
+  @include tablet {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+  }
+}
+// Sub-Header
+h3 {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  font-weight: 700;
+
+  @include tablet {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 500;
+  }
+}
+// Body
+body,
+*[class*="input"] {
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+
+  @include tablet {
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+  }
+}
+// Footer
+footer {
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+
+  @include tablet {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+// Labels & Buttons
+*[class*="label"],
+*[class*="btn"] {
+  font-size: 0.625rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+
+  @include tablet {
+    font-size: 0.75rem;
+  }
+}
+
+//Weights
+*[class*="--medium"] {
+  font-weight: 500;
+}
+*[class*="--bold"] {
+  font-weight: 700;
+}
+
+/*********************************************/
+
+/* Buttons, Anchor Tags Set-up */
+*[class*="btn"] {
+  text-align: center;
+  text-decoration: none;
+  height: 2.5rem;
+
+  border: unset;
+  width: 100%;
+  background-color: $primary-background-color-dark;
+  color: $primary-color-dark;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+
+  @include tablet {
+    padding: 0 2rem;
+    width: 9.375rem;
+  }
+}
+
+.nav-bar__list a,
+a[class*="btn"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  @include flex;
+}
+
+/******************************************/
+//Form default set-up
+
+form {
+  & *[class*="label"] {
+    color: $secondary-color;
+    margin-bottom: 0.25rem;
+  }
+
+  & *[class*="input"] {
+    width: 100%;
+    min-height: 2.25rem;
+    border-radius: 4px;
+    padding: 0.75rem;
+    border: 1px solid $divider-color;
+  }
+
+  & *[class$="error"] {
+    border: 1px solid red;
+  }
+  & *[class$="error-message"] {
+    color: red;
+  }
+}
+
+/**********************************************/
+// Nav-bar
+.header-nav {
+  background-color: $primary-background-color-dark;
+
+  &__wrapper {
+    margin: 0;
+
+    @include desktop {
+      margin: 0 auto;
+    }
+  }
+}
+
+.nav-bar {
+  @include flex(center);
+  flex-wrap: wrap;
+
+  @include tablet {
+    @include flex(space-between);
+    flex-wrap: nowrap;
+    padding: 0 2.25rem;
+    width: 70vw;
+  }
+
+  @include desktop {
+    max-width: 30vw;
+    padding: 0;
+  }
+
+  &__list {
+    list-style: none;
+    color: unset;
+    width: 100vw;
+
+    @include flex(space-evenly);
+
+    @include tablet {
+      width: 60%;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    padding-top: $padding-mobile;
+    max-width: $logo-max-width;
+
+    @include tablet {
+      padding: 0;
+    }
+
+    @include desktop {
+    }
+  }
+
+  &__item {
+    color: $divider-color;
+    text-align: center;
+    width: 50%;
+    min-height: 10vh;
+    position: relative;
+    transition: all $transition-time;
+
+    @include flex;
+
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &--active {
+      color: $primary-color-dark;
+      font-weight: bold;
+      border-bottom: 4px solid $primary-color-dark;
+    }
+  }
+}
+
+.footer {
+  @include theme("dark");
+
+  &-row {
+    padding: 1rem 0;
+    &:not(:last-child) > * {
+      @include tablet {
+        width: 32%;
+      }
+    }
+    @include tablet {
+      @include flex(space-between);
+      padding: 2.25rem 0 0 0;
+    }
+
+    &__address {
+      margin: 0;
+    }
+  }
+
+  &__title {
+    @include tablet {
+      padding: 0 1rem 0 0;
+    }
+
+    @include desktop {
+    }
+  }
+
+  &__link:nth-child(2) {
+    margin: 0 1rem;
+
+    @include tablet {
+      height: 1.5625rem;
+    }
+  }
+  &__img {
+    @include tablet {
+      height: 1.5625rem;
+    }
+  }
+  &__logo {
+    display: none;
+    max-height: 1.5625rem;
+
+    @include tablet {
+      display: inherit;
+    }
+    &--mobile {
+      display: inherit;
+
+      @include tablet {
+        display: none;
+      }
+    }
+  }
+}

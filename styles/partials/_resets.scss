@@ -1,0 +1,23 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+ul,
+h1,
+h2,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.btn,
+a[class*="btn"],
+.nav-bar a,
+p a {
+  color: unset;
+  text-decoration: none;
+}

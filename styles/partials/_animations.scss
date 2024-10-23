@@ -1,0 +1,5 @@
+@use "./variables" as *;
+
+*[class*="btn"]:hover {
+  background-color: $hover-color;
+}

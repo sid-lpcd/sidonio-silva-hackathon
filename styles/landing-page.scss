@@ -1,0 +1,25 @@
+@use "./partials/variables" as *;
+@use "./partials/mixins" as *;
+@use "./partials/animations" as *;
+@use "./partials/resets";
+@use "./partials/global";
+
+.hero {
+  width: 100vw;
+  height: 40vh;
+  @include background-center-img("../../assets/images/hero-bio.jpg", cover);
+  @include flex(start, center);
+  background-color: rgba(50, 50, 50, 0.5);
+  background-blend-mode: overlay;
+
+  @include tablet {
+    height: 75vh;
+  }
+
+  @include desktop {
+  }
+  &__title {
+    @extend h1;
+    color: $primary-color-dark;
+  }
+}

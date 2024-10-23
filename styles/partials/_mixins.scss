@@ -1,0 +1,37 @@
+@use "./variables" as *;
+@use "./animations" as *;
+
+@mixin tablet {
+  @media screen and (min-width: $tablet-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop($breakpoint: $desktop-breakpoint) {
+  @media screen and (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin flex($justify: center, $align: center) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin background-center-img($url, $contain: unset) {
+  background-image: url($url);
+  background-position: center;
+  background-size: $contain;
+  background-repeat: no-repeat;
+}
+
+@mixin theme($option: "light") {
+  @if $option == "light" {
+    background-color: $primary-background-color-light;
+    color: $primary-color-light;
+  } @else {
+    background-color: $primary-background-color-dark;
+    color: $primary-color-dark;
+  }
+}
