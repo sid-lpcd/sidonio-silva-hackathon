@@ -1,7 +1,6 @@
 @use "./variables" as *;
 @use "./mixins" as *;
 @use "./animations" as *;
-@use "./fonts";
 
 html {
   scroll-behavior: smooth;
@@ -11,7 +10,7 @@ body,
 input,
 textarea,
 *::placeholder {
-  font-family: "Nunito Sans", Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: $primary-color-light;
 }
 

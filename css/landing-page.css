@@ -27,18 +27,12 @@ p a {
   text-decoration: none;
 }
 
-@font-face {
-  font-family: "Nunito Sans";
-  src: url("../../assets/fonts/woff/NunitoSans-Regular.woff") format("woff"), url("../../assets/fonts/woff2/NunitoSans-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-}
 html {
   scroll-behavior: smooth;
 }
 
 *::-moz-placeholder {
-  font-family: "Nunito Sans", Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: #323232;
 }
 
@@ -46,7 +40,7 @@ body,
 input,
 textarea,
 *::placeholder {
-  font-family: "Nunito Sans", Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: #323232;
 }
 
@@ -366,10 +360,6 @@ form *[class$=error-message] {
 .hero {
   width: 100vw;
   height: 40vh;
-  background-image: url("../../assets/images/hero-bio.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
   display: flex;
   justify-content: start;
   align-items: center;

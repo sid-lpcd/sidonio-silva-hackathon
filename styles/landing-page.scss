@@ -7,7 +7,7 @@
 .hero {
   width: 100vw;
   height: 40vh;
-  @include background-center-img("../../assets/images/hero-bio.jpg", cover);
+  // @include background-center-img("../../assets/images/hero-bio.jpg", cover);
   @include flex(start, center);
   background-color: rgba(50, 50, 50, 0.5);
   background-blend-mode: overlay;
