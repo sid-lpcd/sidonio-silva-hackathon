@@ -57,14 +57,11 @@ export class TeamVolleyball {
     };
   }
   // Method to simulate a match against another team
-  playMatch(opponent, location) {
+  playMatch(opponent) {
     let teamPower = this.calculateTeamPower();
     const opponentPower = opponent.calculateTeamPower();
-    if (location === "home") {
-      teamPower += Math.random() * 10;
-    } else {
-      teamPower -= (Math.random() - 0.6) * 10;
-    }
+
+    teamPower -= (Math.random() - 0.5) * 10;
 
     const matchResult = teamPower > opponentPower ? true : false;
 

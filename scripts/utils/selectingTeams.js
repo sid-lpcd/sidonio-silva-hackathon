@@ -1,23 +1,22 @@
 import { createElement } from "./helpers.js";
+import { runLeague } from "./volleyballRunLeague.js";
 
 let currentIndex = 0;
 const teamsPerPage = 4;
-let userTeam = {};
+let userTeam = null;
 let leagueTeams = [];
 
 const selectLeagueTeams = (selectedTeam, teams) => {
   leagueTeams = [];
 
-  teams.forEach((team) => {
-    // Check if the current card is not the selected team card
-    if (team !== selectedTeam) {
-      leagueTeams.push(team);
+  let opponent = null;
+  // Randomly select 5 teams from the remaining teams
+  for (let i = 0; i < 5; i++) {
+    opponent = teams[Math.floor(Math.random() * teams.length)];
+    if (opponent !== selectedTeam) {
+      leagueTeams.push(opponent);
     }
-  });
-
-  // Randomly select 4 teams from the remaining teams
-  leagueTeams = leagueTeams.sort(() => Math.random() - 0.5).slice(0, 4);
-  console.log("League teams:", leagueTeams);
+  }
 };
 
 export const displayTeams = (teams) => {
@@ -35,12 +34,18 @@ export const displayTeams = (teams) => {
     card.setAttribute("team-id", team.id);
 
     card.addEventListener("click", (event) => {
-      const teamId = event.target.getAttribute("team-id");
+      const teamId = card.getAttribute("team-id");
+      if (document.querySelector(".team-card--selected")) {
+        document
+          .querySelector(".team-card--selected")
+          .classList.remove("team-card--selected");
+      }
+      card.classList.add("team-card--selected");
 
-      const selectedTeam = teams.find((team) => team.id.toString() === teamId);
-      selectedTeam ? (userTeam = { ...selectedTeam }) : null;
+      const selectedTeam = teams.find((team) => team.id == teamId);
+      selectedTeam ? (userTeam = selectedTeam) : null;
 
-      selectLeagueTeams(selectedTeam); // Pass the selected team object
+      selectLeagueTeams(selectedTeam, teams); // Pass the selected team object
     });
 
     const rowTop = createElement("team-card__row", "div", null, card);
@@ -53,7 +58,7 @@ export const displayTeams = (teams) => {
     createElement(
       "team-card__stats",
       "p",
-      `Wins - ${team.wins}, Losses - ${team.losses}`,
+      `Wins: ${team.wins}, Losses: ${team.losses}`,
       card
     );
     createElement("team-card__stats", "p", "Statistics:", card);
@@ -104,6 +109,14 @@ export const displayTeams = (teams) => {
       if ((currentIndex + 1) * teamsPerPage < teams.length) {
         currentIndex++;
         displayTeams(teams);
+      }
+    });
+
+  document
+    .querySelector(".game-teams__start-btn")
+    .addEventListener("click", () => {
+      if (userTeam) {
+        runLeague(userTeam, leagueTeams);
       }
     });
 
