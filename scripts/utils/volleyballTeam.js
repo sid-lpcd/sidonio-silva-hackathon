@@ -12,7 +12,6 @@ export class TeamVolleyball {
 
   getTotalGames(stats) {
     const totalGames = stats.reduce((total, season) => {
-      console.log(season);
       return total + season.total.games.played;
     }, 0);
     return totalGames;
@@ -50,11 +49,11 @@ export class TeamVolleyball {
 
   generateTeamStats(wins, total) {
     return {
-      blocks: (wins / total) * 85 + Math.floor(Math.random() * 15),
-      aces: (wins / total) * 60 + Math.floor(Math.random() * 40),
-      hits: (wins / total) * 95 + Math.floor(Math.random() * 5),
-      saves: (wins / total) * 80 + Math.floor(Math.random() * 20),
-      tips: (wins / total) * 75 + Math.floor(Math.random() * 25),
+      blocks: Math.floor((wins / total) * 85 + Math.floor(Math.random() * 15)),
+      aces: Math.floor((wins / total) * 60 + Math.floor(Math.random() * 40)),
+      hits: Math.floor((wins / total) * 95 + Math.floor(Math.random() * 5)),
+      saves: Math.floor((wins / total) * 80 + Math.floor(Math.random() * 20)),
+      tips: Math.floor((wins / total) * 75 + Math.floor(Math.random() * 25)),
     };
   }
   // Method to simulate a match against another team

@@ -142,37 +142,3 @@ body {
 }
 
 /*********************************************/
-
-/* Cards Set-up */
-
-.card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 0.625rem;
-  padding: 1.25rem;
-  width: 16rem;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  &__img {
-    border-radius: 8px;
-    width: 100%;
-    height: auto;
-  }
-
-  &__title {
-    font-size: 1.5rem;
-    margin: 0.5rem 0;
-    text-align: center;
-  }
-
-  &__stats {
-    @include flex(center);
-    margin-top: 0.5rem;
-  }
-}

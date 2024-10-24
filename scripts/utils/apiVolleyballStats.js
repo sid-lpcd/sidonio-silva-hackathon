@@ -21,7 +21,6 @@ const volleyballCountryTeams = [
   "Brazil",
   "United States",
   "Poland",
-  "Russia",
   "Italy",
   "France",
   "Serbia",
@@ -112,16 +111,15 @@ export const startGame = async () => {
     seasonTeams = await fetchInfo(seasonTeams);
   }
 
-  console.log(seasonTeams);
-
   let gameTeams = [];
 
   seasonTeams.forEach((element) => {
     element.map((team) => {
       const { id, name, logo, teamStats } = team;
-      console.log(team);
+
       gameTeams.push(new TeamVolleyball(id, name, logo, teamStats));
-      console.log(gameTeams);
     });
   });
+
+  return gameTeams;
 };
