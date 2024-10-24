@@ -4,22 +4,22 @@
 @use "./partials/resets";
 @use "./partials/global";
 
-.hero {
-  width: 100vw;
-  height: 40vh;
-  // @include background-center-img("../../assets/images/hero-bio.jpg", cover);
-  @include flex(start, center);
-  background-color: rgba(50, 50, 50, 0.5);
-  background-blend-mode: overlay;
-
-  @include tablet {
-    height: 75vh;
-  }
+.introduction {
+  @include flex(center);
+  flex-direction: column;
+  max-width: 100%;
+  margin: 0 auto;
 
   @include desktop {
+    max-width: 70%;
   }
-  &__title {
-    @extend h1;
-    color: $primary-color-dark;
+
+  &__title,
+  &__description {
+    text-align: center;
   }
+}
+
+.game-teams {
+  display: none;
 }

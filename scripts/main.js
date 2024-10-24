@@ -1,3 +1,3 @@
-import { getTeamList } from "./utils/apiVolleyballStats.js";
+import { startGame } from "./utils/apiVolleyballStats.js";
 
-getTeamList();
+startGame();

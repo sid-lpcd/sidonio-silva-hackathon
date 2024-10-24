@@ -6,12 +6,12 @@ html {
   scroll-behavior: smooth;
 }
 
-body,
-input,
-textarea,
-*::placeholder {
-  font-family: Arial, Helvetica, sans-serif;
-  color: $primary-color-light;
+body {
+  font-family: Arial, sans-serif;
+  background: $primary-background-color;
+  color: $primary-color;
+  margin: 0;
+  padding: 20px;
 }
 
 /**************** Default Margins Wrapper ******************/
@@ -90,30 +90,17 @@ h3 {
   }
 }
 // Body
-body,
-*[class*="input"] {
+body {
   font-size: 0.8125rem;
   line-height: 1.125rem;
   font-weight: 400;
 
   @include tablet {
-    font-size: 0.875rem;
-    line-height: 1.375rem;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
   }
 }
-// Footer
-footer {
-  font-size: 0.8125rem;
-  line-height: 1.125rem;
-  font-weight: 400;
 
-  @include tablet {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-}
-// Labels & Buttons
-*[class*="label"],
 *[class*="btn"] {
   font-size: 0.625rem;
   line-height: 1.25rem;
@@ -134,7 +121,7 @@ footer {
 
 /*********************************************/
 
-/* Buttons, Anchor Tags Set-up */
+/* Buttons Set-up */
 *[class*="btn"] {
   text-align: center;
   text-decoration: none;
@@ -142,8 +129,8 @@ footer {
 
   border: unset;
   width: 100%;
-  background-color: $primary-background-color-dark;
-  color: $primary-color-dark;
+  background-color: $btn-background-color;
+  color: $btn-color;
   border-radius: 4px;
   padding: 0.75rem;
   margin-bottom: 1rem;
@@ -154,171 +141,38 @@ footer {
   }
 }
 
-.nav-bar__list a,
-a[class*="btn"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+/*********************************************/
 
-  @include flex;
-}
+/* Cards Set-up */
 
-/******************************************/
-//Form default set-up
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0.625rem;
+  padding: 1.25rem;
+  width: 16rem;
+  transition: transform 0.2s;
 
-form {
-  & *[class*="label"] {
-    color: $secondary-color;
-    margin-bottom: 0.25rem;
+  &:hover {
+    transform: translateY(-5px);
   }
 
-  & *[class*="input"] {
+  &__img {
+    border-radius: 8px;
     width: 100%;
-    min-height: 2.25rem;
-    border-radius: 4px;
-    padding: 0.75rem;
-    border: 1px solid $divider-color;
-  }
-
-  & *[class$="error"] {
-    border: 1px solid red;
-  }
-  & *[class$="error-message"] {
-    color: red;
-  }
-}
-
-/**********************************************/
-// Nav-bar
-.header-nav {
-  background-color: $primary-background-color-dark;
-
-  &__wrapper {
-    margin: 0;
-
-    @include desktop {
-      margin: 0 auto;
-    }
-  }
-}
-
-.nav-bar {
-  @include flex(center);
-  flex-wrap: wrap;
-
-  @include tablet {
-    @include flex(space-between);
-    flex-wrap: nowrap;
-    padding: 0 2.25rem;
-    width: 70vw;
-  }
-
-  @include desktop {
-    max-width: 30vw;
-    padding: 0;
-  }
-
-  &__list {
-    list-style: none;
-    color: unset;
-    width: 100vw;
-
-    @include flex(space-evenly);
-
-    @include tablet {
-      width: 60%;
-    }
-  }
-
-  &__image {
-    width: 100%;
-    padding-top: $padding-mobile;
-    max-width: $logo-max-width;
-
-    @include tablet {
-      padding: 0;
-    }
-
-    @include desktop {
-    }
-  }
-
-  &__item {
-    color: $divider-color;
-    text-align: center;
-    width: 50%;
-    min-height: 10vh;
-    position: relative;
-    transition: all $transition-time;
-
-    @include flex;
-
-    &:hover {
-      background-color: $hover-color;
-    }
-
-    &--active {
-      color: $primary-color-dark;
-      font-weight: bold;
-      border-bottom: 4px solid $primary-color-dark;
-    }
-  }
-}
-
-.footer {
-  @include theme("dark");
-
-  &-row {
-    padding: 1rem 0;
-    &:not(:last-child) > * {
-      @include tablet {
-        width: 32%;
-      }
-    }
-    @include tablet {
-      @include flex(space-between);
-      padding: 2.25rem 0 0 0;
-    }
-
-    &__address {
-      margin: 0;
-    }
+    height: auto;
   }
 
   &__title {
-    @include tablet {
-      padding: 0 1rem 0 0;
-    }
-
-    @include desktop {
-    }
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    text-align: center;
   }
 
-  &__link:nth-child(2) {
-    margin: 0 1rem;
-
-    @include tablet {
-      height: 1.5625rem;
-    }
-  }
-  &__img {
-    @include tablet {
-      height: 1.5625rem;
-    }
-  }
-  &__logo {
-    display: none;
-    max-height: 1.5625rem;
-
-    @include tablet {
-      display: inherit;
-    }
-    &--mobile {
-      display: inherit;
-
-      @include tablet {
-        display: none;
-      }
-    }
+  &__stats {
+    @include flex(center);
+    margin-top: 0.5rem;
   }
 }

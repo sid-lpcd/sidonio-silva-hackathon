@@ -25,13 +25,3 @@
   background-size: $contain;
   background-repeat: no-repeat;
 }
-
-@mixin theme($option: "light") {
-  @if $option == "light" {
-    background-color: $primary-background-color-light;
-    color: $primary-color-light;
-  } @else {
-    background-color: $primary-background-color-dark;
-    color: $primary-color-dark;
-  }
-}
