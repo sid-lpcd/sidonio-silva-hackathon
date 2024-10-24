@@ -136,6 +136,37 @@ const playNextRound = (matches, userTeam) => {
   }
 };
 
+const handleImprovementSubmit = (event, userTeam, otherTeams) => {
+  event.preventDefault();
+  console.log("Before User");
+  console.log(userTeam.teamStats);
+
+  userTeam.improveStat(
+    event.target.improvementType.value.toLowerCase(),
+    parseInt(event.target.improvementRange.value)
+  );
+  console.log("After User");
+  console.log(userTeam.teamStats);
+
+  const keys = Object.keys(userTeam.teamStats);
+
+  otherTeams.forEach((team) => {
+    console.log("Before Oppenent");
+    console.log(team.teamStats);
+    console.log(keys[Math.floor(keys.length * Math.random())]);
+    team.improveStat(
+      keys[Math.floor(keys.length * Math.random())],
+      Math.floor((Math.random() - 0.4) * 5)
+    );
+    console.log("After Oppenent");
+    console.log(team.teamStats);
+  });
+
+  document.querySelector(".improvements").reset();
+
+  document.querySelector(".improvements").style.display = "none";
+};
+
 export const runLeague = (userTeam, otherTeams) => {
   rankings = [userTeam, ...otherTeams];
 
@@ -157,5 +188,37 @@ export const runLeague = (userTeam, otherTeams) => {
     .querySelector(".game-league__next-btn")
     .addEventListener("click", () => {
       playNextRound(matches, userTeam);
+      let show = document.querySelector(".improvements__slider-value");
+      show.innerText = "0";
+      document.querySelector(".improvements").style.display = "unset";
+    });
+
+  const improvementsSlider = document.querySelectorAll(".improvements__slider");
+  improvementsSlider[0].addEventListener("change", (event) => {
+    let show = document.querySelector(".improvements__slider-value");
+    show.innerText = event.target.value;
+  });
+
+  const improvementSelector = document.querySelector(".improvements__selector");
+  Object.keys(userTeam.teamStats).forEach((skill) => {
+    createElement(
+      "improvement",
+      "option",
+      skill.toUpperCase(),
+      improvementSelector
+    );
+  });
+
+  document
+    .querySelector(".improvements")
+    .addEventListener("submit", (event) => {
+      handleImprovementSubmit(event, userTeam, otherTeams);
+    });
+
+  document
+    .querySelector(".game-final__reset-btn")
+    .addEventListener("click", (event) => {
+      document.querySelector(".introduction").style.display = "unset";
+      document.querySelector(".game-final").style.display = "none";
     });
 };

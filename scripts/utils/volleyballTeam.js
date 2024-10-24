@@ -49,11 +49,21 @@ export class TeamVolleyball {
 
   generateTeamStats(wins, total) {
     return {
-      blocks: Math.floor((wins / total) * 85 + Math.floor(Math.random() * 15)),
-      aces: Math.floor((wins / total) * 60 + Math.floor(Math.random() * 40)),
-      hits: Math.floor((wins / total) * 95 + Math.floor(Math.random() * 5)),
-      saves: Math.floor((wins / total) * 80 + Math.floor(Math.random() * 20)),
-      tips: Math.floor((wins / total) * 75 + Math.floor(Math.random() * 25)),
+      blocks:
+        Math.floor((wins / total) * 85 + Math.floor(Math.random() * 15)) ||
+        Math.floor(Math.random() * 100),
+      aces:
+        Math.floor((wins / total) * 60 + Math.floor(Math.random() * 40)) ||
+        Math.floor(Math.random() * 100),
+      hits:
+        Math.floor((wins / total) * 95 + Math.floor(Math.random() * 5)) ||
+        Math.floor(Math.random() * 100),
+      saves:
+        Math.floor((wins / total) * 80 + Math.floor(Math.random() * 20)) ||
+        Math.floor(Math.random() * 100),
+      tips:
+        Math.floor((wins / total) * 75 + Math.floor(Math.random() * 25)) ||
+        Math.floor(Math.random() * 100),
     };
   }
   // Method to simulate a match against another team
@@ -81,10 +91,12 @@ export class TeamVolleyball {
   }
 
   improveStat(stat, points) {
+    console.log(stat);
+    console.log(this.teamStats[stat]);
     if (this.teamStats[stat] !== undefined) {
       this.teamStats[stat] += points;
 
-      // Randomly decrease other stats
+      // Randomly change other stats
       Object.keys(this.teamStats).forEach((otherStat) => {
         if (otherStat !== stat) {
           this.teamStats[otherStat] -= Math.floor((Math.random() - 0.4) * 5);

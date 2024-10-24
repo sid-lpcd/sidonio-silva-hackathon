@@ -18,10 +18,7 @@ const selectLeagueTeams = (selectedTeam, teams) => {
     }
   }
 };
-
-export const displayTeams = (teams) => {
-  document.querySelector(".game-teams").style.display = "unset";
-
+const displayTeamCards = (teams) => {
   const teamContainer = document.querySelector(".game-teams__container");
   teamContainer.innerHTML = "";
 
@@ -94,13 +91,21 @@ export const displayTeams = (teams) => {
     );
   });
 
-  // Event Listeners for buttons
+  updateVisibility(teams);
+};
+
+export const displayTeams = (teams) => {
+  document.querySelector(".game-teams").style.display = "unset";
+
+  displayTeamCards(teams);
+
   document
     .querySelector(".game-teams__prev-btn")
     .addEventListener("click", () => {
+      console.log(currentIndex);
       if (currentIndex > 0) {
         currentIndex--;
-        displayTeams(teams);
+        displayTeamCards(teams);
       }
     });
   document
@@ -108,7 +113,7 @@ export const displayTeams = (teams) => {
     .addEventListener("click", () => {
       if ((currentIndex + 1) * teamsPerPage < teams.length) {
         currentIndex++;
-        displayTeams(teams);
+        displayTeamCards(teams);
       }
     });
 
@@ -119,8 +124,6 @@ export const displayTeams = (teams) => {
         runLeague(userTeam, leagueTeams);
       }
     });
-
-  updateVisibility(teams);
 };
 
 const updateVisibility = (teams) => {

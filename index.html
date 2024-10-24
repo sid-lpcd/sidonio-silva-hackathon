@@ -42,6 +42,30 @@
         <h2 class="game-league__title">Team Rankings</h2>
         <ul class="game-league__results game-league__results--ranking"></ul>
         <button class="game-league__next-btn">Next Round</button>
+        <div class="game-league__improve-container">
+          <form class="improvements">
+            <div class="improvements__slider-container">
+              <label for="improvementType">Choose a skill to improve:</label>
+              <select
+                class="improvements__selector"
+                id="improvementType"
+                name="improvementType"
+              ></select>
+              <input
+                class="improvements__slider"
+                name="improvementRange"
+                type="range"
+                value="0"
+                min="0"
+                max="10"
+              />
+              <span class="improvements__slider-value">0</span>
+            </div>
+            <button class="improvements__submit-btn" type="submit">
+              Improve Team
+            </button>
+          </form>
+        </div>
         <h2 class="game-league__title">League Results</h2>
         <ul class="game-league__results game-league__results--games"></ul>
       </div>
@@ -49,6 +73,7 @@
       <div class="game-final">
         <div class="game-final__user-rank"></div>
         <div class="game-final__winner"></div>
+        <button class="game-final__reset-btn">Play Again</button>
         <h2 class="game-final__title">Team Rankings</h2>
         <ul class="game-final__results game-league__results--ranking"></ul>
       </div>
