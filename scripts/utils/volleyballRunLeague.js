@@ -235,9 +235,7 @@ export const runLeague = (userTeam, otherTeams) => {
     show.innerText = event.target.value;
   });
 
-  const improvementSelector = document.querySelector(
-    ".improvements__selector-btn"
-  );
+  const improvementSelector = document.querySelector(".improvements__selector");
   Object.keys(userTeam.teamStats).forEach((skill) => {
     createElement(
       "improvement",
