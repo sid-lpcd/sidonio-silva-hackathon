@@ -77,14 +77,49 @@ const announceWinner = (winner, userWon) => {
   );
 };
 
-const playNextRound = (matches, userTeam) => {
+const playNextRound = (matches, userTeam, otherTeams) => {
   const resultsList = document.querySelectorAll(".game-league__results");
   if (currentRound < totalRounds) {
     results[currentRound] = [];
-    const roundMatches = matches.slice(
-      currentRound * 3,
-      (currentRound + 1) * 3
-    );
+
+    console.log(userTeam, otherTeams);
+
+    let remainingTeams = [userTeam].concat(otherTeams);
+    let roundMatches = [];
+    let match = [];
+
+    console.log("start", remainingTeams);
+    console.warn("end", remainingTeams.toString());
+
+    for (let i = 0; i < 3; i++) {
+      match = matches.find((match) => match.includes(remainingTeams[0])); // [player1, player2]
+
+      roundMatches.unshift(match); // [[player1, player2]]
+
+      console.dir(remainingTeams);
+      // remainingTeams.shift(); //[player2,player3,player4,player5,player6]
+      // remainingTeams.splice(remainingTeams.indexOf(match[1]), 1); //[player3,player4,player5,player6]
+
+      remainingTeams = remainingTeams.map((team) => {
+        console.log(team);
+        if (team) {
+          if (!match.includes(team)) {
+            return team;
+          }
+        }
+
+        return null;
+      });
+
+      console.log(remainingTeams);
+      matches.splice(matches.indexOf(roundMatches[0]), 1); // [[player1,player2],...] lenght 15
+      console.log(matches);
+    }
+    console.log(roundMatches);
+    // const roundMatches = matches.slice(
+    //   currentRound * 3,
+    //   (currentRound + 1) * 3
+    // );
     roundMatches.forEach(([teamA, teamB]) => {
       const result = teamA.playMatch(teamB);
       let winner = null;
@@ -180,14 +215,15 @@ export const runLeague = (userTeam, otherTeams) => {
   const matches = createMatches(rankings);
 
   totalRounds = matches.length / 3; // 3 games rounds per round
-  playNextRound(matches, userTeam);
+
+  playNextRound(matches, userTeam, otherTeams);
 
   document.querySelector(".game-teams").style.display = "none";
   document.querySelector(".game-league").style.display = "block";
   document
     .querySelector(".game-league__next-btn")
     .addEventListener("click", () => {
-      playNextRound(matches, userTeam);
+      playNextRound(matches, userTeam, otherTeams);
       let show = document.querySelector(".improvements__slider-value");
       show.innerText = "0";
       document.querySelector(".improvements").style.display = "unset";

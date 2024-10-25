@@ -26,6 +26,10 @@
   &__container {
     @include flex(center);
   }
+  &__controller {
+    @include flex(center);
+    gap: 1rem;
+  }
 }
 
 /* Cards Set-up */

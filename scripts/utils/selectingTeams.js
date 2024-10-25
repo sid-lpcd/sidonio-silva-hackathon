@@ -51,7 +51,6 @@ const displayTeamCards = (teams) => {
     image.alt = team.name;
 
     createElement("team-card__name", "h3", team.name, rowTop);
-    createElement("team-card__stats", "p", `Last 5 Games:`, card);
     createElement(
       "team-card__stats",
       "p",
@@ -95,6 +94,8 @@ const displayTeamCards = (teams) => {
 };
 
 export const displayTeams = (teams) => {
+  console.log(teams);
+
   document.querySelector(".game-teams").style.display = "unset";
 
   displayTeamCards(teams);
@@ -121,6 +122,7 @@ export const displayTeams = (teams) => {
     .querySelector(".game-teams__start-btn")
     .addEventListener("click", () => {
       if (userTeam) {
+        console.log(userTeam, leagueTeams);
         runLeague(userTeam, leagueTeams);
       }
     });

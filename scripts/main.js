@@ -6,6 +6,8 @@ const runGame = async () => {
   startBtn.disabled = true;
   const teams = await startGame();
 
+  console.log("teams", teams);
+
   startBtn.disabled = false;
 
   startBtn.addEventListener("click", () => {

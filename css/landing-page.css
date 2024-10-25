@@ -196,6 +196,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+.game-teams__controller {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
 
 /* Cards Set-up */
 .team-card {
