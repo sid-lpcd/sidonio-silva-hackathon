@@ -111,16 +111,13 @@ export const startGame = async () => {
     seasonTeams = await fetchInfo(seasonTeams);
   }
 
-  const gameTeams = [];
+  let gameTeams = [];
 
   seasonTeams.forEach((element) => {
-    element.forEach((team) => {
-      // console.log(team);
+    element.map((team) => {
       const { id, name, logo, teamStats } = team;
 
-      const newTeam = new TeamVolleyball(id, name, logo, teamStats);
-
-      gameTeams.push(newTeam);
+      gameTeams.push(new TeamVolleyball(id, name, logo, teamStats));
     });
   });
 

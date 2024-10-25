@@ -94,8 +94,6 @@ const displayTeamCards = (teams) => {
 };
 
 export const displayTeams = (teams) => {
-  console.log(teams);
-
   document.querySelector(".game-teams").style.display = "unset";
 
   displayTeamCards(teams);
@@ -122,7 +120,6 @@ export const displayTeams = (teams) => {
     .querySelector(".game-teams__start-btn")
     .addEventListener("click", () => {
       if (userTeam) {
-        console.log(userTeam, leagueTeams);
         runLeague(userTeam, leagueTeams);
       }
     });
