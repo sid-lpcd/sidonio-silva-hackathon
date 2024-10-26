@@ -2,7 +2,7 @@ import { createElement } from "./helpers.js";
 
 let currentRound = 0;
 let totalRounds = 0;
-const results = [];
+let results = [];
 let rankings = [];
 
 // const createMatches = (teams) => {
@@ -46,7 +46,7 @@ const displayRanking = (parent) => {
   parent.innerHTML = "";
 
   rankings.sort((a, b) => b.league.wins - a.league.wins);
-
+  console.log(rankings);
   rankings.forEach((team, index) => {
     createElement(
       "game-league__rank",
@@ -162,31 +162,127 @@ const playNextRound = (matches, userTeam) => {
   }
 };
 
+const renderTeamStatsCard = (oldTeamStats, userTeam, stats) => {
+  const teamStatsContainer = document.querySelector(".game-league__team-stats");
+  teamStatsContainer.innerHTML = ""; // Clear previous stats
+
+  const statsCard = createElement(
+    "team-stats__card",
+    "div",
+    null,
+    teamStatsContainer
+  );
+
+  const logoElement = createElement("team-stats__logo", "img", null, statsCard);
+  logoElement.src = userTeam.logo;
+  logoElement.alt = `${userTeam.name} logo`;
+
+  createElement(
+    "team-stats__name",
+    "h3",
+    `${userTeam.name} - Team Stats`,
+    statsCard
+  );
+
+  const currentPower = userTeam.calculateTeamPower();
+  const powerChange = currentPower - oldTeamStats.teamPower;
+
+  const powerChangeColor =
+    powerChange > 0 ? "green" : powerChange < 0 ? "red" : "grey";
+
+  const powerElement = createElement(
+    "team-stats__power",
+    "h2",
+    `${currentPower.toFixed(2)} ${
+      powerChange !== 0
+        ? `(${powerChange > 0 ? "+" : "-"}${powerChange.toFixed(2)})`
+        : ""
+    }`,
+    statsCard
+  );
+  powerElement.style.color = powerChangeColor;
+
+  stats.forEach((stat) => {
+    const statContainer = createElement(
+      "team-stats__container",
+      "div",
+      null,
+      statsCard
+    );
+
+    const currentStatValue = userTeam.teamStats[stat];
+    const change = currentStatValue - oldTeamStats.teamStats[stat];
+
+    createElement(
+      "team-stats__stat-label",
+      "span",
+      `${stat}: ${currentStatValue}`,
+      statContainer
+    );
+
+    // Progress Bar
+    const progressBar = createElement(
+      "team-stats__progress-bar",
+      "div",
+      null,
+      statContainer
+    );
+
+    const progress = createElement(
+      "team-stats__progress",
+      "div",
+      null,
+      progressBar
+    );
+    progress.style.width = `${currentStatValue}%`;
+    console.log(progress);
+
+    const changeDisplay = createElement(
+      "team-stats__change",
+      "span",
+      change !== 0 ? `${change > 0 ? "+" : "-"}${change}` : "+ 0",
+      statContainer
+    );
+
+    change > 0
+      ? changeDisplay.classList.add("team-stats__change--increase")
+      : change < 0
+      ? changeDisplay.classList.add("team-stats__change--decrease")
+      : null;
+  });
+};
+
+const resetGame = (userTeam, otherTeams, matches) => {
+  // Reset game variables
+  currentRound = 0;
+  results = [];
+  matches = [];
+  rankings = [];
+  totalRounds = 0;
+
+  // Reset team statistics (if you have a userTeam or array of teams)
+  userTeam = {}; // Assuming a resetStats method exists
+  otherTeams.forEach((team) => (team = {})); // Reset all teams if applicable
+};
+
 const handleImprovementSubmit = (event, userTeam, otherTeams) => {
   event.preventDefault();
-  console.log("Before User");
-  console.log(userTeam.teamStats);
-
+  const oldTeamStats = userTeam.getOldStats();
   userTeam.improveStat(
     event.target.improvementType.value.toLowerCase(),
     parseInt(event.target.improvementRange.value)
   );
-  console.log("After User");
-  console.log(userTeam.teamStats);
 
   const keys = Object.keys(userTeam.teamStats);
 
   otherTeams.forEach((team) => {
-    console.log("Before Oppenent");
-    console.log(team.teamStats);
-    console.log(keys[Math.floor(keys.length * Math.random())]);
     team.improveStat(
       keys[Math.floor(keys.length * Math.random())],
       Math.floor((Math.random() - 0.4) * 5)
     );
-    console.log("After Oppenent");
-    console.log(team.teamStats);
   });
+
+  renderTeamStatsCard(oldTeamStats, userTeam, keys);
 
   document.querySelector(".improvements").reset();
 
@@ -194,10 +290,7 @@ const handleImprovementSubmit = (event, userTeam, otherTeams) => {
 };
 
 export const runLeague = (userTeam, otherTeams) => {
-  console.log(userTeam);
-  console.log(otherTeams);
   rankings = [userTeam, ...otherTeams];
-  console.log(rankings);
 
   rankings.forEach((team) => {
     team.league = {
@@ -208,8 +301,14 @@ export const runLeague = (userTeam, otherTeams) => {
 
   const matches = createMatches(rankings);
 
-  totalRounds = matches.length; // 3 games rounds per round
+  totalRounds = matches.length;
   playNextRound(matches, userTeam);
+
+  renderTeamStatsCard(
+    userTeam.getOldStats(),
+    userTeam,
+    Object.keys(userTeam.teamStats)
+  );
 
   document.querySelector(".game-teams").style.display = "none";
   document.querySelector(".game-league").style.display = "block";
@@ -217,6 +316,28 @@ export const runLeague = (userTeam, otherTeams) => {
     .querySelector(".game-league__next-btn")
     .addEventListener("click", () => {
       playNextRound(matches, userTeam);
+
+      const teamStatsContainer = document.querySelector(
+        ".game-league__team-stats"
+      );
+
+      teamStatsContainer
+        .querySelectorAll(".team-stats__container")
+        .forEach((statContainer, index) => {
+          const changeDisplay = statContainer.querySelector(
+            ".team-stats__change"
+          );
+          changeDisplay.textContent = "0";
+          changeDisplay.classList.remove(
+            "team-stats__change--increase",
+            "team-stats__change--decrease"
+          );
+        });
+
+      const powerDisplay =
+        teamStatsContainer.querySelector(".team-stats__power");
+      powerDisplay.style.color = ""; // Reset color
+
       let show = document.querySelector(".improvements__slider-value");
       show.innerText = "0";
       document.querySelector(".improvements").style.display = "unset";
@@ -230,7 +351,6 @@ export const runLeague = (userTeam, otherTeams) => {
 
   const improvementSelector = document.querySelector(".improvements__selector");
   Object.keys(userTeam.teamStats).forEach((skill) => {
-    console.log(skill);
     createElement(
       "improvement",
       "option",
@@ -248,6 +368,7 @@ export const runLeague = (userTeam, otherTeams) => {
   document
     .querySelector(".game-final__reset-btn")
     .addEventListener("click", (event) => {
+      resetGame(userTeam, otherTeams, matches);
       document.querySelector(".introduction").style.display = "unset";
       document.querySelector(".game-final").style.display = "none";
     });

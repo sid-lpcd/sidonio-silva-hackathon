@@ -89,17 +89,30 @@ export class TeamVolleyball {
       5
     );
   }
+  getOldStats() {
+    const { blocks, aces, hits, saves, tips } = this.teamStats;
+    return {
+      teamStats: {
+        blocks: blocks,
+        aces: aces,
+        hits: hits,
+        saves: saves,
+        tips: tips,
+      },
+      teamPower: this.calculateTeamPower(),
+    };
+  }
 
   improveStat(stat, points) {
-    console.log(stat);
-    console.log(this.teamStats[stat]);
     if (this.teamStats[stat] !== undefined) {
       this.teamStats[stat] += points;
 
       // Randomly change other stats
       Object.keys(this.teamStats).forEach((otherStat) => {
         if (otherStat !== stat) {
-          this.teamStats[otherStat] -= Math.floor((Math.random() - 0.4) * 5);
+          this.teamStats[otherStat] += Math.floor(
+            (Math.random() - 0.4) * points
+          );
         }
       });
     }

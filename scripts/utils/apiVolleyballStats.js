@@ -117,7 +117,6 @@ export const startGame = async () => {
       localStorage.setItem("seasonTeams", JSON.stringify(seasonTeams));
     }
   }
-  console.log(seasonTeams);
 
   let gameTeams = [];
 

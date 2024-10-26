@@ -91,6 +91,74 @@
   }
 }
 
+.team-stats {
+  &__logo {
+    display: block;
+    margin: 0 auto 1rem;
+    max-width: 5rem;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &__card {
+    border: 2px solid $primary-background-color;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px;
+    background-color: $secondary-background-color;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 20px;
+    text-align: center;
+  }
+
+  &__name {
+    text-align: center;
+    padding-top: 0;
+    padding-bottom: 1rem;
+  }
+
+  &__power {
+    @extend .team-stats__name;
+  }
+
+  &__container {
+    @include flex(start, center);
+    margin-bottom: 1rem;
+  }
+
+  &__stat-label {
+    font-weight: 600;
+    width: 100px;
+  }
+
+  &__progress-bar {
+    flex-grow: 1;
+    height: 0.5rem;
+    background-color: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__progress {
+    height: 100%;
+    background-color: grey;
+    transition: width 0.3s ease;
+  }
+
+  &__change {
+    margin-left: 0.5rem;
+    font-weight: bold;
+
+    &--increase {
+      color: green;
+    }
+    &--decrease {
+      color: red;
+    }
+  }
+}
+
 .game-final {
   display: none;
 

@@ -13,7 +13,7 @@ const selectLeagueTeams = (selectedTeam, teams) => {
   // Randomly select 5 teams from the remaining teams
   while (leagueTeams.length < 5) {
     opponent = teams[Math.floor(Math.random() * teams.length)];
-    if (opponent !== selectedTeam) {
+    if (opponent !== selectedTeam && !leagueTeams.includes(opponent)) {
       leagueTeams.push(opponent);
     }
   }
@@ -101,7 +101,6 @@ export const displayTeams = (teams) => {
   document
     .querySelector(".game-teams__prev-btn")
     .addEventListener("click", () => {
-      console.log(currentIndex);
       if (currentIndex > 0) {
         currentIndex--;
         displayTeamCards(teams);

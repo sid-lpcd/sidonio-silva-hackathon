@@ -263,6 +263,62 @@ body {
   color: #6a43b6;
 }
 
+.team-stats__logo {
+  display: block;
+  margin: 0 auto 1rem;
+  max-width: 5rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.team-stats__card {
+  border: 2px solid #6a43b6;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  background-color: #ebe3f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto 20px;
+  text-align: center;
+}
+.team-stats__name, .team-stats__power {
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 1rem;
+}
+.team-stats__container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.team-stats__stat-label {
+  font-weight: 600;
+  width: 100px;
+}
+.team-stats__progress-bar {
+  flex-grow: 1;
+  height: 0.5rem;
+  background-color: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.team-stats__progress {
+  height: 100%;
+  background-color: grey;
+  transition: width 0.3s ease;
+}
+.team-stats__change {
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+.team-stats__change--increase {
+  color: green;
+}
+.team-stats__change--decrease {
+  color: red;
+}
+
 .game-final {
   display: none;
 }
