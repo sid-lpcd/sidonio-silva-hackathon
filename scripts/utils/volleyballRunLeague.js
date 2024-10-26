@@ -262,7 +262,9 @@ const resetGame = (userTeam, otherTeams, matches) => {
 
   // Reset team statistics (if you have a userTeam or array of teams)
   userTeam = {}; // Assuming a resetStats method exists
-  otherTeams.forEach((team) => (team = {})); // Reset all teams if applicable
+  otherTeams.forEach((team) => {
+    team = {};
+  }); // Reset all teams if applicable
 };
 
 const handleImprovementSubmit = (event, userTeam, otherTeams) => {
@@ -312,9 +314,11 @@ export const runLeague = (userTeam, otherTeams) => {
 
   document.querySelector(".game-teams").style.display = "none";
   document.querySelector(".game-league").style.display = "block";
-  document
-    .querySelector(".game-league__next-btn")
-    .addEventListener("click", () => {
+  let btn = document.querySelector(".game-league__next-btn");
+  if (!btn.dataset.listenerAdded) {
+    // Check if listener already added
+    btn.dataset.listenerAdded = "true"; // Mark as listener added
+    btn.addEventListener("click", () => {
       playNextRound(matches, userTeam);
 
       const teamStatsContainer = document.querySelector(
@@ -342,12 +346,18 @@ export const runLeague = (userTeam, otherTeams) => {
       show.innerText = "0";
       document.querySelector(".improvements").style.display = "unset";
     });
+  }
 
   const improvementsSlider = document.querySelectorAll(".improvements__slider");
-  improvementsSlider[0].addEventListener("change", (event) => {
-    let show = document.querySelector(".improvements__slider-value");
-    show.innerText = event.target.value;
-  });
+  if (!improvementsSlider[0].dataset.listenerAdded) {
+    // Check if listener already added
+    improvementsSlider[0].dataset.listenerAdded = "true"; // Mark as listener added
+
+    improvementsSlider[0].addEventListener("change", (event) => {
+      let show = document.querySelector(".improvements__slider-value");
+      show.innerText = event.target.value;
+    });
+  }
 
   const improvementSelector = document.querySelector(".improvements__selector");
   Object.keys(userTeam.teamStats).forEach((skill) => {
@@ -359,17 +369,26 @@ export const runLeague = (userTeam, otherTeams) => {
     );
   });
 
-  document
-    .querySelector(".improvements")
-    .addEventListener("submit", (event) => {
+  btn = document.querySelector(".improvements");
+  if (!btn.dataset.listenerAdded) {
+    // Check if listener already added
+    btn.dataset.listenerAdded = "true"; // Mark as listener added
+    btn.addEventListener("submit", (event) => {
       handleImprovementSubmit(event, userTeam, otherTeams);
     });
+  }
 
-  document
-    .querySelector(".game-final__reset-btn")
-    .addEventListener("click", (event) => {
+  btn = document.querySelector(".game-final__reset-btn");
+  if (!btn.dataset.listenerAdded) {
+    // Check if listener already added
+    btn.dataset.listenerAdded = "true"; // Mark as listener added
+    btn.addEventListener("click", (event) => {
       resetGame(userTeam, otherTeams, matches);
+      document.querySelector(".game-final__user-rank").innerHTML = "";
+      document.querySelector(".game-final__winner").innerHTML = "";
+      document.querySelector(".game-final__results").innerHTML = "";
       document.querySelector(".introduction").style.display = "unset";
       document.querySelector(".game-final").style.display = "none";
     });
+  }
 };

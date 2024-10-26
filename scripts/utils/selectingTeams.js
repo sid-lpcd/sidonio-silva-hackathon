@@ -29,21 +29,25 @@ const displayTeamCards = (teams) => {
   currentTeams.forEach((team) => {
     const card = createElement("team-card", "div", null, teamContainer);
     card.setAttribute("team-id", team.id);
+    if (!card.dataset.listenerAdded) {
+      // Check if listener already added
+      card.dataset.listenerAdded = "true"; // Mark as listener added
 
-    card.addEventListener("click", (event) => {
-      const teamId = card.getAttribute("team-id");
-      if (document.querySelector(".team-card--selected")) {
-        document
-          .querySelector(".team-card--selected")
-          .classList.remove("team-card--selected");
-      }
-      card.classList.add("team-card--selected");
+      card.addEventListener("click", (event) => {
+        const teamId = card.getAttribute("team-id");
+        if (document.querySelector(".team-card--selected")) {
+          document
+            .querySelector(".team-card--selected")
+            .classList.remove("team-card--selected");
+        }
+        card.classList.add("team-card--selected");
 
-      const selectedTeam = teams.find((team) => team.id == teamId);
-      selectedTeam ? (userTeam = selectedTeam) : null;
+        const selectedTeam = teams.find((team) => team.id == teamId);
+        selectedTeam ? (userTeam = selectedTeam) : null;
 
-      selectLeagueTeams(selectedTeam, teams); // Pass the selected team object
-    });
+        selectLeagueTeams(selectedTeam, teams); // Pass the selected team object
+      });
+    }
 
     const rowTop = createElement("team-card__row", "div", null, card);
     const image = createElement("team-card__img", "img", null, rowTop);
@@ -98,30 +102,43 @@ export const displayTeams = (teams) => {
 
   displayTeamCards(teams);
 
-  document
-    .querySelector(".game-teams__prev-btn")
-    .addEventListener("click", () => {
+  let btn = document.querySelector(".game-teams__prev-btn");
+
+  if (!btn.dataset.listenerAdded) {
+    // Check if listener already added
+    btn.dataset.listenerAdded = "true"; // Mark as listener added
+    btn.addEventListener("click", () => {
       if (currentIndex > 0) {
         currentIndex--;
         displayTeamCards(teams);
       }
     });
-  document
-    .querySelector(".game-teams__next-btn")
-    .addEventListener("click", () => {
+  }
+
+  btn = document.querySelector(".game-teams__next-btn");
+
+  if (!btn.dataset.listenerAdded) {
+    // Check if listener already added
+    btn.dataset.listenerAdded = "true"; // Mark as listener added
+    btn.addEventListener("click", () => {
       if ((currentIndex + 1) * teamsPerPage < teams.length) {
         currentIndex++;
         displayTeamCards(teams);
       }
     });
+  }
 
-  document
-    .querySelector(".game-teams__start-btn")
-    .addEventListener("click", () => {
+  btn = document.querySelector(".game-teams__start-btn");
+
+  if (!btn.dataset.listenerAdded) {
+    // Check if listener already added
+    btn.dataset.listenerAdded = "true"; // Mark as listener added
+    btn.addEventListener("click", () => {
       if (userTeam) {
         runLeague(userTeam, leagueTeams);
       }
     });
+  }
 };
 
 const updateVisibility = (teams) => {
