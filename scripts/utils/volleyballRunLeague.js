@@ -5,13 +5,40 @@ let totalRounds = 0;
 const results = [];
 let rankings = [];
 
+// const createMatches = (teams) => {
+//   const matches = [];
+//   for (let i = 0; i < teams.length; i++) {
+//     for (let j = i + 1; j < teams.length; j++) {
+//       matches.push([teams[i], teams[j]]);
+//     }
+//   }
+//   return matches;
+// };
+
 const createMatches = (teams) => {
   const matches = [];
-  for (let i = 0; i < teams.length; i++) {
-    for (let j = i + 1; j < teams.length; j++) {
-      matches.push([teams[i], teams[j]]);
+  let round = [];
+  const teamCount = teams.length;
+
+  for (let i = 0; i < teamCount - 1; i++) {
+    for (let j = 0; j < teamCount / 2; j++) {
+      // Match teams in pairs for each round
+      const team1 = teams[j];
+      const team2 = teams[teamCount - 1 - j];
+
+      round.push([team1, team2]);
+
+      // Every 3 matches (one round), add round to matches and start a new one
+      if (round.length === 3) {
+        matches.push(round);
+        round = [];
+      }
     }
+
+    // Rotate teams for the next round
+    teams.splice(1, 0, teams.pop());
   }
+
   return matches;
 };
 
@@ -81,10 +108,9 @@ const playNextRound = (matches, userTeam) => {
   const resultsList = document.querySelectorAll(".game-league__results");
   if (currentRound < totalRounds) {
     results[currentRound] = [];
-    const roundMatches = matches.slice(
-      currentRound * 3,
-      (currentRound + 1) * 3
-    );
+
+    const roundMatches = matches[currentRound];
+
     roundMatches.forEach(([teamA, teamB]) => {
       const result = teamA.playMatch(teamB);
       let winner = null;
@@ -171,6 +197,7 @@ export const runLeague = (userTeam, otherTeams) => {
   console.log(userTeam);
   console.log(otherTeams);
   rankings = [userTeam, ...otherTeams];
+  console.log(rankings);
 
   rankings.forEach((team) => {
     team.league = {
@@ -181,7 +208,7 @@ export const runLeague = (userTeam, otherTeams) => {
 
   const matches = createMatches(rankings);
 
-  totalRounds = matches.length / 3; // 3 games rounds per round
+  totalRounds = matches.length; // 3 games rounds per round
   playNextRound(matches, userTeam);
 
   document.querySelector(".game-teams").style.display = "none";
@@ -201,10 +228,9 @@ export const runLeague = (userTeam, otherTeams) => {
     show.innerText = event.target.value;
   });
 
-  const improvementSelector = document.querySelector(
-    ".improvements__selector-btn"
-  );
+  const improvementSelector = document.querySelector(".improvements__selector");
   Object.keys(userTeam.teamStats).forEach((skill) => {
+    console.log(skill);
     createElement(
       "improvement",
       "option",
