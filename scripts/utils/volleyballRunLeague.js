@@ -168,6 +168,8 @@ const handleImprovementSubmit = (event, userTeam, otherTeams) => {
 };
 
 export const runLeague = (userTeam, otherTeams) => {
+  console.log(userTeam);
+  console.log(otherTeams);
   rankings = [userTeam, ...otherTeams];
 
   rankings.forEach((team) => {

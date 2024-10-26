@@ -1,4 +1,5 @@
 import { TeamVolleyball } from "./volleyballTeam.js";
+import { backUpTeams } from "./teamBackUp.js";
 
 const URL = "https://volleyball-highlights-api.p.rapidapi.com/";
 const HEADER = {
@@ -108,8 +109,15 @@ export const startGame = async () => {
   let seasonTeams = JSON.parse(localStorage.getItem("seasonTeams")) || [];
 
   if (!seasonTeams.length) {
-    seasonTeams = await fetchInfo(seasonTeams);
+    try {
+      seasonTeams = await fetchInfo(seasonTeams);
+    } catch (error) {
+      seasonTeams = backUpTeams;
+      //update localstorage
+      localStorage.setItem("seasonTeams", JSON.stringify(seasonTeams));
+    }
   }
+  console.log(seasonTeams);
 
   let gameTeams = [];
 

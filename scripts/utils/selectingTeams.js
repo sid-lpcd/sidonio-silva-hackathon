@@ -11,7 +11,7 @@ const selectLeagueTeams = (selectedTeam, teams) => {
 
   let opponent = null;
   // Randomly select 5 teams from the remaining teams
-  for (let i = 0; i < 5; i++) {
+  while (leagueTeams.length < 5) {
     opponent = teams[Math.floor(Math.random() * teams.length)];
     if (opponent !== selectedTeam) {
       leagueTeams.push(opponent);
