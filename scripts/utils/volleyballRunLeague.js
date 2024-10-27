@@ -5,15 +5,8 @@ let totalRounds = 0;
 let results = [];
 let rankings = [];
 let startingStats = {};
-// const createMatches = (teams) => {
-//   const matches = [];
-//   for (let i = 0; i < teams.length; i++) {
-//     for (let j = i + 1; j < teams.length; j++) {
-//       matches.push([teams[i], teams[j]]);
-//     }
-//   }
-//   return matches;
-// };
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const createMatches = (teams) => {
   const matches = [];
@@ -42,21 +35,53 @@ const createMatches = (teams) => {
   return matches;
 };
 
-const displayRanking = (parent) => {
+const displayRanking = async (parent) => {
   parent.innerHTML = "";
-
   rankings.sort((a, b) => b.league.wins - a.league.wins);
 
-  rankings.forEach((team, index) => {
-    createElement(
-      "game-league__rank",
-      "li",
-      `${index + 1}   ${team.name}   W: ${team.league.wins}   L: ${
-        team.league.losses
-      }`,
-      parent
-    );
-  });
+  parent.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  await Promise.all(
+    rankings.map((team, index) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          createElement(
+            "game-league__rank",
+            "li",
+            `${index + 1}   ${team.name}   W: ${team.league.wins}   L: ${
+              team.league.losses
+            }`,
+            parent
+          );
+          resolve(); // Resolve the promise when the timeout completes
+        }, index * 500);
+      });
+    })
+  );
+};
+
+const displayMatchResults = async (results, currentRound) => {
+  const resultsList = document.querySelectorAll(".game-league__results")[1];
+
+  setTimeout(() => {
+    resultsList.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 100);
+
+  await Promise.all(
+    results[currentRound].map((match, index) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          createElement(
+            "game-league__game",
+            "li",
+            `${match.match} - Winner: ${match.winner}, Loser: ${match.loser}`,
+            resultsList
+          );
+          resolve(); // Resolve the promise when the timeout completes
+        }, index * 500);
+      });
+    })
+  );
 };
 
 const determineRank = (userTeam) => {
@@ -103,8 +128,7 @@ const announceWinner = (winner, userWon) => {
   );
 };
 
-const playNextRound = (matches, userTeam) => {
-  const resultsList = document.querySelectorAll(".game-league__results");
+const playNextRound = async (matches, userTeam) => {
   if (currentRound < totalRounds) {
     results[currentRound] = [];
 
@@ -134,16 +158,22 @@ const playNextRound = (matches, userTeam) => {
       });
     });
 
-    results[currentRound].forEach((result) => {
-      createElement(
-        "game-league__game",
-        "li",
-        `${result.match} - Winner: ${result.winner}, Loser: ${result.loser}`,
-        resultsList[1]
-      );
-    });
+    await displayMatchResults(results, currentRound);
 
-    displayRanking(document.querySelector(".game-league__results"));
+    await delay(1000);
+
+    await displayRanking(
+      document.querySelector(".game-league__results"),
+      currentRound
+    );
+
+    await delay(1000);
+
+    await renderTeamStatsCard(
+      userTeam.getOldStats(),
+      userTeam,
+      Object.keys(userTeam.teamStats)
+    );
     currentRound++; // Move to the next round
   } else {
     if (rankings[0].id == userTeam.id) {
@@ -163,92 +193,115 @@ const playNextRound = (matches, userTeam) => {
   }
 };
 
-const renderTeamStatsCard = (oldTeamStats, userTeam, stats) => {
-  const teamStatsContainer = document.querySelector(".game-league__team-stats");
-  teamStatsContainer.innerHTML = ""; // Clear previous stats
-
-  const statsCard = createElement(
-    "team-stats__card",
-    "div",
-    null,
-    teamStatsContainer
-  );
-
-  const logoElement = createElement("team-stats__logo", "img", null, statsCard);
-  logoElement.src = userTeam.logo;
-  logoElement.alt = `${userTeam.name} logo`;
-
-  createElement(
-    "team-stats__name",
-    "h3",
-    `${userTeam.name} - Team Stats`,
-    statsCard
-  );
-
-  const currentPower = userTeam.calculateTeamPower();
-  const powerChange = currentPower - oldTeamStats.teamPower;
-
-  const powerChangeColor =
-    powerChange > 0 ? "green" : powerChange < 0 ? "red" : "grey";
-
-  const powerElement = createElement(
-    "team-stats__power",
-    "h2",
-    `${currentPower.toFixed(2)} ${
-      powerChange !== 0
-        ? `(${powerChange > 0 ? "+" : "-"}${powerChange.toFixed(2)})`
-        : ""
-    }`,
-    statsCard
-  );
-  powerElement.style.color = powerChangeColor;
-
-  stats.forEach((stat) => {
-    const statContainer = createElement(
-      "team-stats__container",
+const createTeamStatsCard = async (teamStatsContainer, userTeam, stats) => {
+  return new Promise((resolve) => {
+    const statsCard = createElement(
+      "team-stats__card",
       "div",
+      null,
+      teamStatsContainer
+    );
+
+    const logoElement = createElement(
+      "team-stats__logo",
+      "img",
       null,
       statsCard
     );
-
-    const currentStatValue = userTeam.teamStats[stat];
-    const change = currentStatValue - oldTeamStats.teamStats[stat];
+    logoElement.src = userTeam.logo;
+    logoElement.alt = `${userTeam.name} logo`;
 
     createElement(
-      "team-stats__stat-label",
-      "span",
-      `${stat}: ${currentStatValue}`,
-      statContainer
+      "team-stats__name",
+      "h3",
+      `${userTeam.name} - Team Stats`,
+      statsCard
     );
 
-    // Progress Bar
-    const progressBar = createElement(
-      "team-stats__progress-bar",
-      "div",
-      null,
-      statContainer
+    const powerElement = createElement(
+      "team-stats__power",
+      "h2",
+      `0.00`,
+      statsCard
     );
+    powerElement.style.color = "grey";
 
-    const progress = createElement(
-      "team-stats__progress",
-      "div",
-      null,
-      progressBar
-    );
-    progress.style.width = `${currentStatValue}%`;
+    stats.forEach((stat) => {
+      const statContainer = createElement(
+        "team-stats__container",
+        "div",
+        null,
+        statsCard
+      );
 
-    const changeDisplay = createElement(
-      "team-stats__change",
-      "span",
-      change !== 0 ? `${change > 0 ? "+" : "-"}${change}` : "+ 0",
-      statContainer
-    );
+      const statLabel = createElement(
+        "team-stats__stat-label",
+        "span",
+        `${stat}: 0`,
+        statContainer
+      );
 
-    change > 0
-      ? changeDisplay.classList.add("team-stats__change--increase")
-      : change < 0
-      ? changeDisplay.classList.add("team-stats__change--decrease")
-      : null;
+      // Progress Bar
+      const progressBar = createElement(
+        "team-stats__progress-bar",
+        "div",
+        null,
+        statContainer
+      );
+
+      const progress = createElement(
+        "team-stats__progress",
+        "div",
+        null,
+        progressBar
+      );
+      progress.style.width = "0%";
+      createElement("team-stats__change", "span", "0", statLabel);
+    });
+
+    resolve(statsCard); // Resolve the promise after creating the elements
+  });
+};
+
+const renderTeamStatsCard = async (oldTeamStats, userTeam, stats) => {
+  const teamStatsContainer = document.querySelector(".game-league__team-stats");
+
+  let statsCard = teamStatsContainer.querySelector(".team-stats__card");
+
+  if (!statsCard) {
+    statsCard = await createTeamStatsCard(teamStatsContainer, userTeam, stats);
+  }
+  const currentPower = userTeam.calculateTeamPower();
+  const powerChange = currentPower - oldTeamStats.teamPower;
+  const powerChangeColor =
+    powerChange > 0 ? "green" : powerChange < 0 ? "red" : "grey";
+
+  const powerElement = statsCard.querySelector(".team-stats__power");
+  powerElement.textContent = `${currentPower.toFixed(2)} ${
+    powerChange !== 0
+      ? `(${powerChange > 0 ? "+" : "-"}${powerChange.toFixed(2)})`
+      : ""
+  }`;
+  powerElement.style.color = powerChangeColor;
+
+  const statsContainers = document.querySelectorAll(".team-stats__container");
+
+  statsContainers.forEach((stat, index) => {
+    const currentStatValue = userTeam.teamStats[stats[index]];
+    const statChange = currentStatValue - oldTeamStats.teamStats[stats[index]];
+    const statChangeColor =
+      statChange > 0 ? "green" : statChange < 0 ? "red" : "black";
+    stat.querySelector(
+      ".team-stats__progress"
+    ).style.width = `${currentStatValue}%`;
+    stat.querySelector(".team-stats__stat-label").innerHTML = `${
+      stats[index]
+    }: ${currentStatValue} <span class="team-stats__change">${
+      statChange !== 0 ? `${statChange > 0 ? "+" : ""}${statChange}` : "+0"
+    }</span>`;
+    const changeDisplay = stat.querySelector(".team-stats__change");
+
+    changeDisplay.style.color = statChangeColor;
   });
 };
 
@@ -309,12 +362,6 @@ export const runLeague = (userTeam, otherTeams) => {
   totalRounds = matches.length;
   playNextRound(matches, userTeam);
 
-  renderTeamStatsCard(
-    userTeam.getOldStats(),
-    userTeam,
-    Object.keys(userTeam.teamStats)
-  );
-
   document.querySelector(".game-teams").style.display = "none";
   document.querySelector(".game-league").style.display = "block";
   let btn = document.querySelector(".game-league__next-btn");
@@ -322,8 +369,6 @@ export const runLeague = (userTeam, otherTeams) => {
     // Check if listener already added
     btn.dataset.listenerAdded = "true"; // Mark as listener added
     btn.addEventListener("click", () => {
-      playNextRound(matches, userTeam);
-
       const teamStatsContainer = document.querySelector(
         ".game-league__team-stats"
       );
@@ -348,6 +393,8 @@ export const runLeague = (userTeam, otherTeams) => {
       let show = document.querySelector(".improvements__slider-value");
       show.innerText = "0";
       document.querySelector(".improvements").style.display = "unset";
+
+      playNextRound(matches, userTeam);
     });
   }
 

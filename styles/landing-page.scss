@@ -85,6 +85,11 @@
       padding: 10px;
       border-bottom: 1px solid #ddd;
     }
+
+    &--ranking {
+      display: flex;
+      flex-direction: column;
+    }
   }
   &__title {
     color: $secondary-color;
@@ -143,7 +148,6 @@
   &__progress {
     height: 100%;
     background-color: grey;
-    transition: width 0.3s ease;
   }
 
   &__change {

@@ -23,6 +23,20 @@
   animation: fadeInFromTop 0.5s ease forwards;
 }
 
+.game-league__game {
+  animation: fadeInFromTop 0.5s ease forwards;
+}
+.game-league__rank {
+  animation: fadeInFromTop 0.5s ease forwards;
+}
+
+.team-stats__progress {
+  transition: width 1s ease;
+}
+.team-stats__change {
+  transition: color 0.5s ease;
+}
+
 *,
 *::before,
 *::after {
@@ -279,6 +293,10 @@ body {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
+.game-league__results--ranking {
+  display: flex;
+  flex-direction: column;
+}
 .game-league__title {
   color: #6a43b6;
 }
@@ -326,7 +344,6 @@ body {
 .team-stats__progress {
   height: 100%;
   background-color: grey;
-  transition: width 0.3s ease;
 }
 .team-stats__change {
   margin-left: 0.5rem;
