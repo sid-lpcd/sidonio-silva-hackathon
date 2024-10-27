@@ -4,7 +4,7 @@ let currentRound = 0;
 let totalRounds = 0;
 let results = [];
 let rankings = [];
-
+let startingStats = {};
 // const createMatches = (teams) => {
 //   const matches = [];
 //   for (let i = 0; i < teams.length; i++) {
@@ -46,7 +46,7 @@ const displayRanking = (parent) => {
   parent.innerHTML = "";
 
   rankings.sort((a, b) => b.league.wins - a.league.wins);
-  console.log(rankings);
+
   rankings.forEach((team, index) => {
     createElement(
       "game-league__rank",
@@ -62,7 +62,6 @@ const displayRanking = (parent) => {
 const determineRank = (userTeam) => {
   const rank = rankings.findIndex((team) => team.id === userTeam.id) + 1;
 
-  console.log(rank);
   const userContainer = document.querySelector(".game-final__user-rank");
 
   const userLogo = createElement("winner__img", "img", null, userContainer);
@@ -157,6 +156,8 @@ const playNextRound = (matches, userTeam) => {
 
     displayRanking(document.querySelector(".game-final__results"));
 
+    document.querySelectorAll(".game-league__results")[1].innerHTML = "";
+
     document.querySelector(".game-league").style.display = "none";
     document.querySelector(".game-final").style.display = "block";
   }
@@ -235,7 +236,6 @@ const renderTeamStatsCard = (oldTeamStats, userTeam, stats) => {
       progressBar
     );
     progress.style.width = `${currentStatValue}%`;
-    console.log(progress);
 
     const changeDisplay = createElement(
       "team-stats__change",
@@ -261,7 +261,7 @@ const resetGame = (userTeam, otherTeams, matches) => {
   totalRounds = 0;
 
   // Reset team statistics (if you have a userTeam or array of teams)
-  userTeam = {}; // Assuming a resetStats method exists
+  userTeam.teamStats = startingStats.teamStats; // Assuming a resetStats method exists
   otherTeams.forEach((team) => {
     team = {};
   }); // Reset all teams if applicable
@@ -292,6 +292,9 @@ const handleImprovementSubmit = (event, userTeam, otherTeams) => {
 };
 
 export const runLeague = (userTeam, otherTeams) => {
+  startingStats = userTeam.getOldStats();
+  console.log(startingStats);
+
   rankings = [userTeam, ...otherTeams];
 
   rankings.forEach((team) => {
