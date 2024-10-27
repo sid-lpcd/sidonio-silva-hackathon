@@ -26,9 +26,11 @@ const displayTeamCards = (teams) => {
   const end = start + teamsPerPage;
   const currentTeams = teams.slice(start, end);
 
-  currentTeams.forEach((team) => {
+  currentTeams.forEach((team, index) => {
     const card = createElement("team-card", "div", null, teamContainer);
     card.setAttribute("team-id", team.id);
+    card.style.animationDelay = `${index * 0.2}s`;
+
     if (!card.dataset.listenerAdded) {
       // Check if listener already added
       card.dataset.listenerAdded = "true"; // Mark as listener added

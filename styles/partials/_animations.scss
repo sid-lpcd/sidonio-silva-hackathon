@@ -4,3 +4,24 @@
   background-color: $hover-color;
   color: $primary-color;
 }
+
+*[class*="btn"]:disabled {
+  background-color: grey;
+  color: rgb(138, 138, 138);
+}
+
+@keyframes fadeInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.team-card {
+  opacity: 0; /* Ensure the card is hidden initially */
+  animation: fadeInFromTop 0.5s ease forwards;
+}
