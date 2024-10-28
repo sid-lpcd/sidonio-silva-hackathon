@@ -64,7 +64,7 @@ const displayMatchResults = async (results, currentRound) => {
   const resultsList = document.querySelectorAll(".game-league__results")[1];
 
   setTimeout(() => {
-    resultsList.scrollIntoView({ behavior: "smooth", block: "center" });
+    resultsList.scrollIntoView({ behavior: "smooth", block: "end" });
   }, 100);
 
   await Promise.all(
